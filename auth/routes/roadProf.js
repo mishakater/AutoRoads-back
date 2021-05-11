@@ -17,4 +17,25 @@ router.post('/road', async (req, res) => {
     }
 });
 
+router.get('/road/all', function (req, res) {
+    RoadProfile.find({}, function (err, data) {
+        if (err) {
+            res.send("ERROR");
+            next();
+        }
+        res.json(data);
+    })
+});
+
+router.get('/searchroad', (req, res, next) => {
+    const searchedField = req.query.roadName;
+    RoadProfile.find({roadName:{$regex: searchedField, $options: '$i'}})
+        .then(data=>{
+            res.send(data);
+        })
+   
+});
+
+
+
 module.exports = router;
