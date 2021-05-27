@@ -30,7 +30,7 @@ router.post('/register', async (req,res) => {
 
     //create a new user
     const user = new User({
-        name: req.body.name, 
+        name: req.body.name,
         email: req.body.email,
         password: hashedPassword
     });
@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
       //PASSWORD is correct
       const validPass = await bcrypt.compare(req.body.password, user.password);
       if(!validPass) return res.status(400).send('Эл. почта или пароль неверные!');
-      
+
       //Create and assign a token
       const token = jwt.sign({
         email: user.email,
@@ -63,9 +63,7 @@ router.post('/login', async (req, res) => {
         userId: user._id
     }, 'secretkey', {expiresIn: '20s'});
 
-    res.header('auth-token', token).send(token);
-
-    res.send({ user: user.name});
+    res.header('auth-token', token).send(user);
 });
 
 router.get('/all', function (req, res) {

@@ -27,13 +27,35 @@ router.get('/road/all', function (req, res) {
     })
 });
 
+const Ratings = require('../model/Ratings');
+
 router.get('/searchroad', (req, res, next) => {
     const searchedField = req.query.roadName;
-    RoadProfile.find({roadName:{$regex: searchedField, $options: '$i'}})
-        .then(data=>{
-            res.send(data);
-        })
-   
+
+    RoadProfile.aggregate([
+        {
+            $match: {
+                roadName: {
+                    $regex: searchedField,
+                    $options: '$i'
+                }
+            }
+        },
+        {
+            $lookup: {
+                from: "ratings",
+                localField: "_id",
+                foreignField: "roadId",
+                as: "ratings"
+            },
+        },
+    ]).exec((err, data) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(data);
+        res.send(data);
+    });
 });
 
 
