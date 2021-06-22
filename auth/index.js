@@ -18,6 +18,7 @@ const profRoute = require('./routes/profile');
 //const vacanRoute = require('./routes/vacan');
 const roadProfileRoute = require('./routes/roadProf');
 const ratingsRoute = require('./routes/rating');
+const commentsRoute = require('./routes/comment');
 
 
 dotenv.config();
@@ -38,6 +39,7 @@ app.use('/api/user', profRoute);
 //app.use('/api/vacan', vacanRoute);
 app.use('/api/roadProf', roadProfileRoute);
 app.use('/api/ratings', ratingsRoute);
+app.use('/api/comments', commentsRoute);
 
 
 

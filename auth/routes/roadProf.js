@@ -27,8 +27,6 @@ router.get('/road/all', function (req, res) {
     })
 });
 
-const Ratings = require('../model/Ratings');
-
 router.get('/searchroad', (req, res, next) => {
     const searchedField = req.query.roadName;
 
@@ -49,29 +47,6 @@ router.get('/searchroad', (req, res, next) => {
                 as: "ratings"
             },
         },
-    ]).exec((err, data) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log(data);
-        res.send(data);
-    });
-});
-
-const Comments = require('../model/Comments');
-
-router.get('/commentroad', (req, res, next) => {
-    const searchedField = req.query.roadName;
-
-    RoadProfile.aggregate([
-        {
-            $match: {
-                roadName: {
-                    $regex: searchedField,
-                    $options: '$i'
-                }
-            }
-        },
         {
             $lookup: {
                 from: "comments",
@@ -88,6 +63,5 @@ router.get('/commentroad', (req, res, next) => {
         res.send(data);
     });
 });
-
 
 module.exports = router;
